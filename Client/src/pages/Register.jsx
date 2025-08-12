@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import API from "../utils/api";
+import "./Register.css";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -12,12 +13,12 @@ export default function Register() {
     password: "",
     registrationNo: "",
     branch: "",
-    batch: ""
+    batch: "",
   });
 
   const [errors, setErrors] = useState({});
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
 
@@ -33,7 +34,8 @@ export default function Register() {
     if (!form.name.trim()) newErrors.name = "Name is required";
     if (!form.email.trim()) newErrors.email = "Email is required";
     if (!form.password.trim()) newErrors.password = "Password is required";
-    if (!form.registrationNo.trim()) newErrors.registrationNo = "Registration number is required";
+    if (!form.registrationNo.trim())
+      newErrors.registrationNo = "Registration number is required";
     if (!form.branch.trim()) newErrors.branch = "Branch is required";
     if (!form.batch.trim()) newErrors.batch = "Batch is required";
 
@@ -41,7 +43,7 @@ export default function Register() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validate()) {
@@ -59,74 +61,48 @@ export default function Register() {
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit} className="col-md-6">
+    <div className="register-page">
+      <div className="form-container">
+        <h2 className="form-title">Join Coding Club</h2>
+        <p className="form-subtitle">
+          Fill in your details to register for the test
+        </p>
 
-        <input
-          className="form-control my-2"
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={form.name}
-          onChange={handleChange}
-        />
-        {errors.name && <div className="text-danger mb-2">{errors.name}</div>}
+        <form onSubmit={handleSubmit}>
+          {[
+            "name",
+            "email",
+            "password",
+            "registrationNo",
+            "branch",
+            "batch",
+          ].map((field, idx) => (
+            <div key={idx} className="input-group">
+              <input
+                type={field === "password" ? "password" : "text"}
+                name={field}
+                placeholder={
+                  field === "registrationNo"
+                    ? "Registration Number"
+                    : field === "batch"
+                    ? "Batch (e.g., 2021-2025)"
+                    : field.charAt(0).toUpperCase() + field.slice(1)
+                }
+                value={form[field]}
+                onChange={handleChange}
+                className={errors[field] ? "error-input" : ""}
+              />
+              {errors[field] && (
+                <span className="error-text">{errors[field]}</span>
+              )}
+            </div>
+          ))}
 
-        <input
-          className="form-control my-2"
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-        />
-        {errors.email && <div className="text-danger mb-2">{errors.email}</div>}
-
-        <input
-          className="form-control my-2"
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-        />
-        {errors.password && <div className="text-danger mb-2">{errors.password}</div>}
-
-        <input
-          className="form-control my-2"
-          type="text"
-          name="registrationNo"
-          placeholder="Registration Number"
-          value={form.registrationNo}
-          onChange={handleChange}
-        />
-        {errors.registrationNo && <div className="text-danger mb-2">{errors.registrationNo}</div>}
-
-        <input
-          className="form-control my-2"
-          type="text"
-          name="branch"
-          placeholder="Branch"
-          value={form.branch}
-          onChange={handleChange}
-        />
-        {errors.branch && <div className="text-danger mb-2">{errors.branch}</div>}
-
-        <input
-          className="form-control my-2"
-          type="text"
-          name="batch"
-          placeholder="Batch (e.g., 2021-2025)"
-          value={form.batch}
-          onChange={handleChange}
-        />
-        {errors.batch && <div className="text-danger mb-2">{errors.batch}</div>}
-
-        <button className="btn btn-primary mt-2" type="submit">
-          Register
-        </button>
-      </form>
+          <button type="submit" className="register-btn">
+            Register
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

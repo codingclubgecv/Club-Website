@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import API from "../utils/api";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import "./ResetPassword.css";
 
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
@@ -10,12 +11,12 @@ export default function ResetPassword() {
 
   const [form, setForm] = useState({
     newPassword: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState({});
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
 
@@ -27,8 +28,10 @@ export default function ResetPassword() {
   const validate = () => {
     const newErrors = {};
 
-    if (!form.newPassword.trim()) newErrors.newPassword = "New password is required";
-    if (!form.confirmPassword.trim()) newErrors.confirmPassword = "Confirm password is required";
+    if (!form.newPassword.trim())
+      newErrors.newPassword = "New password is required";
+    if (!form.confirmPassword.trim())
+      newErrors.confirmPassword = "Confirm password is required";
     if (form.newPassword !== form.confirmPassword)
       newErrors.confirmPassword = "Passwords do not match";
 
@@ -36,7 +39,7 @@ export default function ResetPassword() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validate()) {
@@ -47,7 +50,7 @@ export default function ResetPassword() {
     try {
       const res = await API.post("/auth/reset-password", {
         token,
-        newPassword: form.newPassword
+        newPassword: form.newPassword,
       });
       toast.success(res.data.message);
       navigate("/");
@@ -57,32 +60,42 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Reset Password</h2>
-      <form onSubmit={handleSubmit} className="col-md-6">
+    <div className="rp-page">
+      <div className="rp-container">
+        <h2 className="rp-title">Reset Password</h2>
+        <p className="rp-subtitle">
+          Enter and confirm your new password below.
+        </p>
+        <form onSubmit={handleSubmit}>
+          <input
+            className="rp-input"
+            type="password"
+            name="newPassword"
+            placeholder="New Password"
+            value={form.newPassword}
+            onChange={handleChange}
+          />
+          {errors.newPassword && (
+            <div className="rp-error">{errors.newPassword}</div>
+          )}
 
-        <input
-          className="form-control my-2"
-          type="password"
-          name="newPassword"
-          placeholder="New Password"
-          value={form.newPassword}
-          onChange={handleChange}
-        />
-        {errors.newPassword && <div className="text-danger mb-2">{errors.newPassword}</div>}
+          <input
+            className="rp-input"
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={form.confirmPassword}
+            onChange={handleChange}
+          />
+          {errors.confirmPassword && (
+            <div className="rp-error">{errors.confirmPassword}</div>
+          )}
 
-        <input
-          className="form-control my-2"
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          value={form.confirmPassword}
-          onChange={handleChange}
-        />
-        {errors.confirmPassword && <div className="text-danger mb-2">{errors.confirmPassword}</div>}
-
-        <button className="btn btn-success mt-2">Update Password</button>
-      </form>
+          <button className="rp-btn" type="submit">
+            Update Password
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

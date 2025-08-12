@@ -2,15 +2,16 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import API from "../utils/api";
 import { useNavigate, Link } from "react-router-dom";
+import "./Login.css";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
-  const handleChange = e =>
+  const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await API.post("/auth/login", form);
@@ -23,30 +24,47 @@ export default function Login() {
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Login with Password</h2>
-      <form onSubmit={handleSubmit} className="col-md-6">
-        <input
-          className="form-control my-2"
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-        />
-        <input
-          className="form-control my-2"
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-        />
-        <button className="btn btn-primary">Login</button>
-        <div className="mt-3">
-          <Link to="/forgot-password">Forgot Password?</Link> |
-          <Link to="/otp-login" className="ms-2">Login with OTP</Link> |
-          <Link to="/register" className="ms-2">Register</Link>
-        </div>
-      </form>
+    <div className="login-page">
+      <div className="form-container">
+        <h2 className="form-title">Welcome Back</h2>
+        <p className="form-subtitle">Login with your credentials</p>
+
+        <form onSubmit={handleSubmit}>
+          <div className="input-group">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button type="submit" className="login-btn">
+            Login
+          </button>
+
+          <div className="form-links">
+            <Link to="/forgot-password">Forgot Password?</Link>
+            <span> | </span>
+            <Link to="/otp-login">Login with OTP</Link>
+            <span> | </span>
+            <Link to="/register">Register</Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
