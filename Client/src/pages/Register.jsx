@@ -9,7 +9,10 @@ export default function Register() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
+    registrationNo: "",
+    branch: "",
+    batch: ""
   });
 
   const [errors, setErrors] = useState({});
@@ -30,6 +33,9 @@ export default function Register() {
     if (!form.name.trim()) newErrors.name = "Name is required";
     if (!form.email.trim()) newErrors.email = "Email is required";
     if (!form.password.trim()) newErrors.password = "Password is required";
+    if (!form.registrationNo.trim()) newErrors.registrationNo = "Registration number is required";
+    if (!form.branch.trim()) newErrors.branch = "Branch is required";
+    if (!form.batch.trim()) newErrors.batch = "Batch is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -86,6 +92,36 @@ export default function Register() {
           onChange={handleChange}
         />
         {errors.password && <div className="text-danger mb-2">{errors.password}</div>}
+
+        <input
+          className="form-control my-2"
+          type="text"
+          name="registrationNo"
+          placeholder="Registration Number"
+          value={form.registrationNo}
+          onChange={handleChange}
+        />
+        {errors.registrationNo && <div className="text-danger mb-2">{errors.registrationNo}</div>}
+
+        <input
+          className="form-control my-2"
+          type="text"
+          name="branch"
+          placeholder="Branch"
+          value={form.branch}
+          onChange={handleChange}
+        />
+        {errors.branch && <div className="text-danger mb-2">{errors.branch}</div>}
+
+        <input
+          className="form-control my-2"
+          type="text"
+          name="batch"
+          placeholder="Batch (e.g., 2021-2025)"
+          value={form.batch}
+          onChange={handleChange}
+        />
+        {errors.batch && <div className="text-danger mb-2">{errors.batch}</div>}
 
         <button className="btn btn-primary mt-2" type="submit">
           Register
