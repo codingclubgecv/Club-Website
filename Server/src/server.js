@@ -4,6 +4,10 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
+<<<<<<< HEAD
+=======
+import adminRoutes from "./routes/admin.routes.js";
+>>>>>>> 5bbdcef8809fd13c30221aeb9162db62ca8ea0dc
 
 dotenv.config();
 const app = express();
@@ -21,6 +25,7 @@ app.get("/", (req, res) => {
     res.send("Coding Club Backend Running.................");
 });
 app.use('/api/auth', authRoutes);
+app.use("/api/admin", adminRoutes);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
