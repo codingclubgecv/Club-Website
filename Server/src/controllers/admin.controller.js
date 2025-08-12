@@ -15,6 +15,7 @@ export const approveUser = async (req, res) => {
     res.status(200).json({ message: "User approved successfully" });
 };
 
+
 export const rejectUser = async (req, res) => {
     const { userId } = req.params;
     await User.findByIdAndDelete(userId);

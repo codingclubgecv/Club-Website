@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import authRoutes from "./routes/auth.routes"
+import authRoutes from "./routes/auth.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
     res.send("Coding Club Backend Running.................");
 });
 app.use('/api/auth', authRoutes);
+app.use("/api/admin", adminRoutes);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)

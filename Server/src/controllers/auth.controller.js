@@ -3,6 +3,9 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { sendEmail } from '../utils/sendEmail.js';
+import dotenv from "dotenv";
+dotenv.config();
+
 
 export const registerUser = async (req, res) => {
     try {
@@ -93,6 +96,32 @@ export const verifyEmail = async (req, res) => {
         res.status(200).json({ message: 'Email verified successfully' });
     } catch (err) {
         console.error('Error in verifyEmail:', err); // More detailed error log
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+export const loginAdmin = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        // const { email, password, loginAs } = req.body;
+
+        const user = await User.findOne({ email });
+        if (!user) return res.status(404).json({ message: 'Admin not found' });
+        if (user.role !== 'admin') return res.status(403).json({ message: 'Access denied' });
+
+        // if (loginAs === 'admin' && user.role !== 'admin') {
+        //     return res.status(403).json({ message: 'Only admin can login here' });
+        // }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+
+        const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        res.status(200).json({ token, user: { name: user.name, email: user.email, role: user.role } });
+    } catch (err) {
+        // res.status(500).json({ message: 'Server error' });
+        console.error(err); // log error for debugging
         res.status(500).json({ message: 'Server error' });
     }
 };
