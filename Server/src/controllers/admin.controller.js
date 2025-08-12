@@ -1,5 +1,28 @@
 import User from "../models/User.js";
 
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().sort({ adminVerified: 1, createdAt: -1 }); 
+
+    const totalUsers = users.length;
+    const pendingCount = users.filter(user => !user.adminVerified).length;
+
+    res.status(200).json({
+      success: true,
+      totalUsers,
+      pendingCount,
+      users
+    });
+  } catch (err) {
+    console.error("Error fetching all users:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: err.message
+    });
+  }
+};
+
 export const getPendingUsers = async (req, res) => {
   try {
     console.log("Fetching pending users..."); // Debug log
@@ -10,7 +33,9 @@ export const getPendingUsers = async (req, res) => {
       return res.status(200).json({ 
         success: true, 
         message: "No pending users found",
-        users: [] 
+        total: pendingUsers.length,
+        users: pendingUsers
+        // users: [] 
       });
     }
 
@@ -24,6 +49,7 @@ export const getPendingUsers = async (req, res) => {
     });
   }
 };
+
 
 export const approveUser = async (req, res) => {
     try {
