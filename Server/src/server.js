@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import authRoutes from "./routes/auth.routes"
 
 dotenv.config();
 const app = express();
@@ -11,14 +12,15 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: "http://localhost:5173", // React frontend URL
+    origin: "http://localhost:5173",
     credentials: true
 }));
 
-// Basic route
+
 app.get("/", (req, res) => {
     res.send("Coding Club Backend Running.................");
 });
+app.use('/api/auth', authRoutes);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
