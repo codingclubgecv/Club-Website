@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import API from "../utils/api";
 import { useNavigate, Link } from "react-router-dom";
+import "./OtpLogin.css"; // 👈 CSS file import
 
 export default function OtpLogin() {
   const [email, setEmail] = useState("");
@@ -10,12 +11,11 @@ export default function OtpLogin() {
   const [countdown, setCountdown] = useState(0);
   const navigate = useNavigate();
 
-  // Countdown effect
   useEffect(() => {
     let timer;
     if (countdown > 0) {
       timer = setInterval(() => {
-        setCountdown(prev => {
+        setCountdown((prev) => {
           if (prev <= 1) {
             clearInterval(timer);
             return 0;
@@ -27,7 +27,7 @@ export default function OtpLogin() {
     return () => clearInterval(timer);
   }, [countdown]);
 
-  const formatTime = seconds => {
+  const formatTime = (seconds) => {
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;
     return `${m}:${s < 10 ? "0" : ""}${s}`;
@@ -42,7 +42,9 @@ export default function OtpLogin() {
 
       const { lastOtpSentAt, cooldown } = res.data;
       if (lastOtpSentAt && cooldown) {
-        const timeElapsed = Math.floor((Date.now() - new Date(lastOtpSentAt)) / 1000);
+        const timeElapsed = Math.floor(
+          (Date.now() - new Date(lastOtpSentAt)) / 1000
+        );
         const timeLeft = Math.max(cooldown - timeElapsed, 0);
         setCountdown(timeLeft);
       } else {
@@ -73,53 +75,58 @@ export default function OtpLogin() {
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Login with OTP</h2>
-      <div className="col-md-6">
+    <div className="otp-page">
+      <div className="otp-container">
+        <h2 className="otp-title">Login with OTP</h2>
+        <p className="otp-subtitle">Secure one-time password login</p>
 
-        {/* Email input stays always visible */}
         <input
-          className="form-control my-2"
+          className="otp-input"
           type="email"
           placeholder="Email"
           value={email}
-          onChange={e => setEmail(e.target.value)}
-          disabled={otpSent} // Optional: lock email after OTP sent
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={otpSent}
         />
 
-        {/* OTP input only shows after email is verified */}
         {otpSent && (
           <input
-            className="form-control my-2"
+            className="otp-input"
             type="text"
             placeholder="Enter OTP"
             value={otp}
-            onChange={e => setOtp(e.target.value)}
+            onChange={(e) => setOtp(e.target.value)}
           />
         )}
 
-        {/* Button switches label based on stage */}
         <button
-          className={`btn ${otpSent ? "btn-primary" : "btn-success"}`}
+          className={`otp-btn ${otpSent ? "primary" : "success"}`}
           onClick={handleAction}
           disabled={!email.trim() || (otpSent && !otp.trim())}
         >
-          {otpSent ? "Verify OTP" : countdown > 0 ? `Resend OTP in ${formatTime(countdown)}` : "Send OTP"}
+          {otpSent
+            ? "Verify OTP"
+            : countdown > 0
+            ? `Resend OTP in ${formatTime(countdown)}`
+            : "Send OTP"}
         </button>
 
-        {/* Resend OTP option if needed */}
         {otpSent && countdown === 0 && (
-          <button className="btn btn-link mt-2" onClick={sendOtp}>Resend OTP</button>
+          <button className="otp-resend" onClick={sendOtp}>
+            Resend OTP
+          </button>
         )}
 
-        {/* Countdown visible while waiting */}
         {otpSent && countdown > 0 && (
-          <p className="text-muted mt-2">You can resend OTP in {formatTime(countdown)}</p>
+          <p className="otp-timer">
+            You can resend OTP in {formatTime(countdown)}
+          </p>
         )}
 
-        <div className="mt-3">
-          <Link to="/">Login with Password</Link> |
-          <Link to="/register" className="ms-2">Register</Link>
+        <div className="otp-links">
+          <Link to="/">Login with Password</Link>
+          <span> | </span>
+          <Link to="/register">Register</Link>
         </div>
       </div>
     </div>
