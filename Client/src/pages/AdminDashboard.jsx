@@ -14,7 +14,7 @@ const AdminDashboard = () => {
   const fetchPendingUsers = async () => {
     try {
       const res = await axios.get("/api/admin/pending-users", {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: Bearer ${token} },
       });
 
       const usersArray = Array.isArray(res.data)
@@ -34,10 +34,10 @@ const AdminDashboard = () => {
     if (!window.confirm("Approve this user?")) return;
     try {
       await axios.put(
-        `/api/admin/approve/${userId}`,
+        /api/admin/approve/${userId},
         {},
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: Bearer ${token} },
         }
       );
       setPendingUsers(pendingUsers.filter((user) => user._id !== userId));
@@ -49,8 +49,8 @@ const AdminDashboard = () => {
   const rejectUser = async (userId) => {
     if (!window.confirm("Reject and delete this user?")) return;
     try {
-      await axios.delete(`/api/admin/reject/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      await axios.delete(/api/admin/reject/${userId}, {
+        headers: { Authorization: Bearer ${token} },
       });
       setPendingUsers(pendingUsers.filter((user) => user._id !== userId));
     } catch (err) {

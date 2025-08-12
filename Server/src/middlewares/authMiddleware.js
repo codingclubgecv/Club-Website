@@ -4,13 +4,20 @@ import User from "../models/User.js";
 export const protect = async (req, res, next) => {
     try {
         const token = req.headers.authorization?.split(" ")[1];
-        if (!token) return res.status(401).json({ message: "Not authorized" });
+        if (!token) {
+            return res.status(401).json({ message: "Not authorized, no token provided" });
+        }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = await User.findById(decoded.userId);
+
+        req.user = await User.findById(decoded.id).select('-password'); 
+        if (!req.user) {
+            return res.status(401).json({ message: "The user belonging to this token no longer exists." });
+        }
+
         next();
     } catch (err) {
-        res.status(401).json({ message: "Token failed" });
+        res.status(401).json({ message: "Not authorized, token failed" });
     }
 };
 
