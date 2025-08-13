@@ -6,13 +6,13 @@ import Admin from "../models/Admin.js";
 dotenv.config();
 
 mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("✅ MongoDB Connected"))
-.catch((err) => console.error("❌ DB Connection Failed", err));
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.error("❌ DB Connection Failed", err));
 
 const createAdmin = async () => {
   try {
-    const email = "codingclub.gecv"; 
-    const password = "Admin@123"; 
+    const email = "codingclub.gecv@gmail.com";
+    const password = "Admin@123";
 
     const existingAdmin = await Admin.findOne({ email });
     if (existingAdmin) {
