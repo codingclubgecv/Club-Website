@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import Admin from "../models/Admin.js"
+import bcrypt from "bcryptjs";
 
 export const getAllUsers = async (req, res) => {
   try {
