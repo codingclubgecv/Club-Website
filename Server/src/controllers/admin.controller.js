@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import Admin from "../models/Admin.js"
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -74,4 +75,41 @@ export const rejectUser = async (req, res) => {
     } catch (err) {
         res.status(500).json({ success: false, message: "Server error" });
     }
+};
+
+
+export const getAdminProfile = async (req, res) => {
+  try {
+    const admin = await Admin.findById(req.admin._id).select("-password");
+    if (!admin) return res.status(404).json({ success: false, message: "Admin not found" });
+
+    res.status(200).json({ success: true, admin });
+  } catch (err) {
+    console.error("Error fetching admin profile:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+// Update Admin Profile
+export const updateAdminProfile = async (req, res) => {
+  try {
+    const admin = await Admin.findById(req.admin._id);
+    if (!admin) return res.status(404).json({ success: false, message: "Admin not found" });
+
+    const { name, email, password } = req.body;
+
+    if (name) admin.name = name;
+    if (email) admin.email = email;
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      admin.password = await bcrypt.hash(password, salt);
+    }
+
+    await admin.save();
+
+    res.status(200).json({ success: true, message: "Admin profile updated successfully" });
+  } catch (err) {
+    console.error("Error updating admin profile:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 };

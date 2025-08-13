@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Spinner } from "react-bootstrap";
 
-const AdminDashboard = () => {
+const UserList = () => {
   const [users, setUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [pendingCount, setPendingCount] = useState(0);
@@ -157,4 +157,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default UserList;
