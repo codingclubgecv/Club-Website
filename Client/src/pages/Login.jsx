@@ -2,11 +2,13 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import API from "../utils/api";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // ⬅️ Import Context
 import "./Login.css";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
+  const { login } = useAuth(); // ⬅️ Context se login function
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -15,9 +17,9 @@ export default function Login() {
     e.preventDefault();
     try {
       const res = await API.post("/auth/login", form);
-      localStorage.setItem("token", res.data.token);
+      login(res.data.token); // ⬅️ Context update + localStorage save
       toast.success("Login successful");
-      navigate("/dashboard");
+      navigate("/"); // ⬅️ Login ke baad home page
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
     }
