@@ -7,6 +7,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import EmailVerification from "./pages/EmailVerification";
 import AdminLogin from "./pages/AdminLogin";
+<<<<<<< HEAD
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import DashboardHome from "./pages/Admin/DashboardHome";
 import UserList from "./pages/Admin/UserList";
@@ -16,6 +17,9 @@ import AboutPage from "./pages/AboutPage";
 import LandingPage from "./pages/LandingPage";
 import EventPage from "./pages/EventPage";
 import LeadsPage from "./About/LeadsSection";
+=======
+import AdminDashboard from "./pages/AdminDashboard";
+>>>>>>> dbeffd83cc079aa6ff9326533395cb54ffb6de65
 
 const AdminRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -57,10 +61,6 @@ function App() {
             </AdminRoute>
           }
         >
-          {/* Nested routes inside AdminDashboard */}
-          <Route index element={<DashboardHome />} /> {/* Default */}
-          <Route path="profile" element={<AdminProfile />} />
-          <Route path="users" element={<UserList />} />
         </Route>
       </Routes>
     </Router>

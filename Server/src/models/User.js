@@ -10,8 +10,8 @@ const userSchema = new mongoose.Schema({
     collegeName: { type: String, default: "Government Engineering College, Vaishali" },
     profileImage: { type: String, default: "" },
 
-    isVerified: { type: Boolean, default: false }, // email verified
-    adminVerified: { type: Boolean, default: false }, // admin approval
+    isVerified: { type: Boolean, default: false }, 
+    adminVerified: { type: Boolean, default: false }, 
 
     role: { type: String, enum: ["student", "lead"], default: "student" },
 
