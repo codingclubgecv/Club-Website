@@ -11,7 +11,7 @@ export default function AdminLogin() {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
     if (token && role === "admin") {
-      navigate("/admin-dashboard");
+      navigate("/admin/dashboard");
     }
   }, [navigate]);
 
@@ -19,21 +19,22 @@ export default function AdminLogin() {
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async e => {
-    e.preventDefault();
-    try {
-      const res = await API.post("/admin/login", {
-        ...form,
-        loginAs: "admin" 
-      });
+  e.preventDefault();
+  try {
+    const res = await API.post("/admin/login", { ...form });
 
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", res.data.user.role);
-      toast.success("Admin login successful");
-      navigate("/admin/dashboard");
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Login failed");
-    }
-  };
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("role", res.data.admin.role); // <-- fix here
+    localStorage.setItem("adminEmail", res.data.admin.email);
+    localStorage.setItem("adminName", res.data.admin.name);
+
+    toast.success("Admin login successful");
+    navigate("/admin/dashboard");
+  } catch (err) {
+    toast.error(err.response?.data?.message || "Login failed");
+  }
+};
+
 
   return (
     <div className="container mt-5">

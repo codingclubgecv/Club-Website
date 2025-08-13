@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
-import User from "../models/User.js";
+import Admin from "../models/Admin.js";
 
 dotenv.config();
 
@@ -14,7 +14,7 @@ const createAdmin = async () => {
     const email = "codingclub.gecv"; 
     const password = "Admin@123"; 
 
-    const existingAdmin = await User.findOne({ email });
+    const existingAdmin = await Admin.findOne({ email });
     if (existingAdmin) {
       console.log("⚠️ Admin already exists");
       mongoose.connection.close();
@@ -23,7 +23,7 @@ const createAdmin = async () => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const admin = new User({
+    const admin = new Admin({
       name: "Club Admin",
       email,
       password: hashedPassword,

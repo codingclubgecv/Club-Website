@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     isVerified: { type: Boolean, default: false }, // email verified
     adminVerified: { type: Boolean, default: false }, // admin approval
 
-    role: { type: String, enum: ["student", "lead", "admin"], default: "student" },
+    role: { type: String, enum: ["student", "lead"], default: "student" },
 
     otp: String,
     otpExpiry: Date,

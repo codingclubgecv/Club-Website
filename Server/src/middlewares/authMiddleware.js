@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+import Admin from "../models/Admin.js";
 
 export const protect = async (req, res, next) => {
     try {
@@ -10,7 +10,7 @@ export const protect = async (req, res, next) => {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        req.user = await User.findById(decoded.id).select('-password'); 
+        req.user = await Admin.findById(decoded.id).select('-password'); 
         // req.user = await User.findById(decoded.userId).select('-password');
 
         if (!req.user) {
@@ -25,8 +25,8 @@ export const protect = async (req, res, next) => {
 
 export const adminOnly = (req, res, next) => {
     if (req.user && req.user.role === "admin") {
-        next();
+        return next();
     } else {
-        res.status(403).json({ message: "Admin access required" });
+        return res.status(403).json({ message: "Admin access required" });
     }
 };
