@@ -9,13 +9,14 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  
   const token = localStorage.getItem("token");
 
   // Fetch all users
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get("/api/admin/all-users", {
+      const { data } = await axios.get("http://localhost:5000/api/admin/all-users", {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (data.success) {
@@ -36,7 +37,7 @@ const AdminDashboard = () => {
   const handleApprove = async (userId) => {
     if (!window.confirm("Are you sure you want to approve this user?")) return;
     try {
-      await axios.put(`/api/admin/approve/${userId}`, {}, {
+      await axios.put(`http://localhost:5000/api/admin/approve/${userId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchUsers();
@@ -49,7 +50,7 @@ const AdminDashboard = () => {
   const handleReject = async (userId) => {
     if (!window.confirm("Are you sure you want to reject & delete this user?")) return;
     try {
-      await axios.delete(`/api/admin/reject/${userId}`, {
+      await axios.delete(`http://localhost:5000/api/admin/reject/${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchUsers();

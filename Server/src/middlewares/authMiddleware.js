@@ -11,6 +11,8 @@ export const protect = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         req.user = await User.findById(decoded.id).select('-password'); 
+        // req.user = await User.findById(decoded.userId).select('-password');
+
         if (!req.user) {
             return res.status(401).json({ message: "The user belonging to this token no longer exists." });
         }
