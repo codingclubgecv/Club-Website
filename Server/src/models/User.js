@@ -1,5 +1,25 @@
 import mongoose from "mongoose";
 
+const socialLinksSchema = new mongoose.Schema({
+  github: String,
+  linkedin: String,
+  instagram: String,
+  leetcode: String,
+  hackerrank: String,
+  gfg: String
+}, { _id: false });
+
+const skillsSchema = new mongoose.Schema({
+  name: String,
+  icon: String 
+}, { _id: false });
+
+const educationSchema = new mongoose.Schema({
+  degree: String,
+  institution: String,
+  year: String
+}, { _id: false });
+
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -10,9 +30,15 @@ const userSchema = new mongoose.Schema({
     collegeName: { type: String, default: "Government Engineering College, Vaishali" },
     profileImage: { type: String, default: "" },
 
-    isVerified: { type: Boolean, default: false }, 
-    adminVerified: { type: Boolean, default: false }, 
+    
+    phone: String,
+    about: { type: String, maxlength: 300 },
+    education: [educationSchema],
+    skills: [skillsSchema],
+    socialLinks: socialLinksSchema,
 
+    isVerified: { type: Boolean, default: false },
+    adminVerified: { type: Boolean, default: false },
     role: { type: String, enum: ["student", "lead"], default: "student" },
 
     otp: String,
