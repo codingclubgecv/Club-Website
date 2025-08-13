@@ -11,6 +11,11 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import DashboardHome from "./pages/Admin/DashboardHome";
 import UserList from "./pages/Admin/UserList";
 import AdminProfile from "./pages/Admin/AdminProfile";
+import Navbar from "./nav/Navbar";
+import AboutPage from "./pages/AboutPage";
+import LandingPage from "./pages/LandingPage";
+import EventPage from "./pages/EventPage";
+import LeadsPage from "./About/LeadsSection";
 
 const AdminRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -26,9 +31,14 @@ const AdminRoute = ({ children }) => {
 function App() {
   return (
     <Router>
+      <Navbar />
       <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/events" element={<EventPage />} />
+        <Route path="/leaderboard" element={<LeadsPage />} />
+        <Route path="/about" element={<AboutPage />} />
         {/* Public Routes */}
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-email" element={<EmailVerification />} />
         <Route path="/otp-login" element={<OtpLogin />} />
@@ -38,7 +48,7 @@ function App() {
 
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminLogin />} />
-        
+
         <Route
           path="/admin/dashboard"
           element={

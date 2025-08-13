@@ -36,7 +36,7 @@ export default function ForgotPassword() {
             Send Reset Link
           </button>
           <div className="fp-links">
-            <Link to="/">Back to Login</Link>
+            <Link to="/login">Back to Login</Link>
           </div>
         </form>
       </div>

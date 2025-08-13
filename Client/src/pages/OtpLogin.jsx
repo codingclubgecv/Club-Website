@@ -124,7 +124,7 @@ export default function OtpLogin() {
         )}
 
         <div className="otp-links">
-          <Link to="/">Login with Password</Link>
+          <Link to="/login">Login with Password</Link>
           <span> | </span>
           <Link to="/register">Register</Link>
         </div>
